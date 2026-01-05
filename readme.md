@@ -8,7 +8,7 @@ The different codes for the pictures are in ```ppmcodes/```. The sources have to
 
 *Dependences:*
 
-    - a working C compiler (anything supporting at least C89)
+- a working C compiler (anything supporting at least C89)
   
   
 *Build with GCC on Windows:* ```gcc -o ppmgen.exe ppmgen.c```
