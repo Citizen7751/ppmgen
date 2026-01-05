@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* -------------------- The API for PPMGen -------------------- */
@@ -14,6 +15,10 @@ void ppmgen_add_pixel_grey(FILE *f,
                            const unsigned char s);
 void ppmgen_skip_pixel(FILE *f);
 
+void ppmgen_terminate_if(const int cond,
+                         const char *msg);
+
+void ppmgen_make_picture(FILE *f); /* user-implemented */
 
 /* -------------------- Files for pictures -------------------- */
 
@@ -55,6 +60,14 @@ void ppmgen_skip_pixel(FILE *f)
     fgetc(f);
 }
 
+void ppmgen_terminate_if(const int cond,
+                         const char *msg)
+{
+    if (cond) {
+        printf("PPMGen - FATAL: %s\n", msg);
+        abort();
+    }
+}
 
 /* ------------------------------------------------------------ */
 
@@ -66,13 +79,13 @@ int main(void)
     char confirm[4] = {0};
     FILE *f = NULL;
 
-    if (flen > F_MAXLEN) {
+    if (flen > F_MAXLEN - 4) {
         fprintf(stderr,
                 "File name \"%s\" is longer than %d characters! (%d)\n",
                 fname,
                 F_MAXLEN - 4,   /* -4 for ".ppm" */
                 flen);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     sprintf(file, "%s.ppm", fname);
@@ -88,7 +101,7 @@ int main(void)
         if (strcmp(confirm, "yes")) {
             puts("Aborted.");
             fclose(f);
-            return 0;
+            return EXIT_SUCCESS;
         }
     }
 
@@ -97,12 +110,12 @@ int main(void)
 
     if (f == NULL) {
         printf("Failed to open %s! Exiting...\n", file);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     ppmgen_make_picture(f);
 
     fclose(f);
     printf("Generated %s\n", file);
-    return 0;
+    return EXIT_SUCCESS;
 }
