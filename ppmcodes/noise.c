@@ -22,19 +22,19 @@ void draw_noise(FILE *f,
 
     for (y = y_beg; y < y_end; y++) {
         for (x = x_beg; x < x_end; x++) {
-
-            fputc((rand() % 256), f);
-            fputc((rand() % 256), f);
-            fputc((rand() % 256), f);
+            ppmgen_add_pixel_colors(f,
+                                    rand() % 256,
+                                    rand() % 256,
+                                    rand() % 256);
         }
     }
 }
 
 
 /* ----- necessary function ----- */
-void make_picture(FILE *f)
+void ppmgen_make_picture(FILE *f)
 {
     srand(time(NULL));
-    add_header(f);
+    ppmgen_add_header(f);
     draw_noise(f, 0, w, 0, h);
 }

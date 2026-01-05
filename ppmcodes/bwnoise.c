@@ -19,24 +19,20 @@ void draw_noise(FILE *f,
 {
     unsigned int x;
     unsigned int y;
-    unsigned char cell;
 
     for (y = y_beg; y < y_end; y++) {
         for (x = x_beg; x < x_end; x++) {
 
-            cell = rand() % 256;
-            fputc(cell, f);
-            fputc(cell, f);
-            fputc(cell, f);
+            ppmgen_add_pixel_grey(f, rand() % 256);
         }
     }
 }
 
 
 /* ----- necessary function ----- */
-void make_picture(FILE *f)
+void ppmgen_make_picture(FILE *f)
 {
     srand(time(NULL));
-    add_header(f);
+    ppmgen_add_header(f);
     draw_noise(f, 0, w, 0, h);
 }

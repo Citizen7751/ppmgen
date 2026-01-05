@@ -19,10 +19,7 @@ void bg_btow(FILE *f,
 
     for (y = y_beg; y < y_end; y++) {
         for (x = x_beg; x < x_end; x++) {
-
-            fputc(((x+y) % 256), f);
-            fputc(((x+y) % 256), f);
-            fputc(((x+y) % 256), f);
+            ppmgen_add_pixel_grey(f, (x+y) % 256);
         }
     }
 }
@@ -38,19 +35,17 @@ void bg_btow_inv(FILE *f,
 
     for (y = y_end; y > y_beg; y--) {
         for (x = x_end; x > x_beg; x--) {
-
-            fputc((y-x) % 256, f);
-            fputc((y-x) % 256, f);
-            fputc((y-x) % 256, f);
+            ppmgen_add_pixel_grey(f, (y-x) % 256);
         }
     }
 }
 
 
 /* ----- necessary function ----- */
-void make_picture(FILE *f)
+void ppmgen_make_picture(FILE *f)
 {
-    add_header(f);
+    ppmgen_add_header(f);
+
     bg_btow    (f, 0, w, 0,       h/4);
     bg_btow_inv(f, 0, w, h/4,     h/2);
     bg_btow    (f, 0, w, h/2,     h*(3/4.0));
